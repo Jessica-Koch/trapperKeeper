@@ -30,6 +30,12 @@ class TrapperKeeper
     mentor = self.get_me.dig('current_enrollment', 'mentor_id')
     response = self.class.get("#{@base_url}/mentors/#{mentor}/student_availability", headers: {"authorization": @auth_token})
 
-    # JSON.parse(response.body)
+    JSON.parse(ressponse.body)
+  end
+
+  def get_roadmap(id)
+
+    response = self.class.get("#{@base_url}/roadmaps/#{id}")
+    JSON.parse(response.body)
   end
 end
