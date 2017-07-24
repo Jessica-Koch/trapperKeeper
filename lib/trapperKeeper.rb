@@ -39,4 +39,15 @@ class TrapperKeeper
     response = self.class.get("#{@base_url}/message_threads", headers: {'authorization': @auth_token})
     JSON.parse(response.body)
   end
+
+  def create_message(subject="", body_text)
+    my_email = self.get_me['email']
+    mentor_id = self.get_me.dig('current_enrollment', 'mentor_id')
+    response = self.class.post("#{@base_url}/messages", body: {
+      "sender": my_email,
+      "recipient_id": mentor_id,
+      "subject": subject,
+      "stripped-text": body_text
+    }, headers: {'authorization': @auth_token})
+  end
 end
