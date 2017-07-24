@@ -1,8 +1,10 @@
 require 'httparty'
 require 'json'
+require 'roadmap.rb'
 
 class TrapperKeeper
   include HTTParty
+  include Roadmap
 
   def initialize(email, password)
     @base_url = 'https://www.bloc.io/api/v1'
@@ -30,12 +32,11 @@ class TrapperKeeper
     mentor = self.get_me.dig('current_enrollment', 'mentor_id')
     response = self.class.get("#{@base_url}/mentors/#{mentor}/student_availability", headers: {"authorization": @auth_token})
 
-    JSON.parse(ressponse.body)
+    JSON.parse(response.body)
   end
 
-  def get_roadmap(id)
-
-    response = self.class.get("#{@base_url}/roadmaps/#{id}")
+  def get_messages
+    response = self.class.get("#{@base_url}/message_threads", headers: {'authorization': @auth_token})
     JSON.parse(response.body)
   end
 end
